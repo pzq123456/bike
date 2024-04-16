@@ -2,3 +2,4 @@
 data/mobike.csv
 references/*.pdf
 data/
+.venv/
