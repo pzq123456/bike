@@ -1,4 +1,4 @@
 .DS_Store
 data/mobike.csv
-references/基于摩拜骑行数据的上海市共享单车减排效益时空分析_李文翔.pdf
-references/基于上海市数据的共享单车用户通勤模式研究（英文）_王若萱.pdf
+references/*.pdf
+data/
