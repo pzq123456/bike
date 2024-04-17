@@ -4,7 +4,11 @@
 https://data.sh.gov.cn/view/data-resource/index.html?type=道路交通
 
 ## 要点
-1. [GeoHash](https://zhuanlan.zhihu.com/p/35940647) [在线工具](https://csxgame.top/#/)
+1. [GeoHash](https://zhuanlan.zhihu.com/p/35940647) 
+   1. [在线工具](https://csxgame.top/#/) 
+   2. [资料](https://www.goitman.cn/2021/11/02/%E7%BB%8F%E7%BA%AC%E5%BA%A6%E7%9A%84Geohash%E7%AE%97%E6%B3%95%E4%B8%8E%E4%B8%A4%E7%82%B9%E8%B7%9D%E7%A6%BB%E7%AE%97%E6%B3%95/)
+   3. [geoTree](https://arxiv.org/pdf/2008.02167.pdf)
+
 
 ## 关键词
 1. 无桩式共享单车
