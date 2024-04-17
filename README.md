@@ -8,7 +8,7 @@ https://data.sh.gov.cn/view/data-resource/index.html?type=道路交通
    1. [在线工具](https://csxgame.top/#/) 
    2. [资料](https://www.goitman.cn/2021/11/02/%E7%BB%8F%E7%BA%AC%E5%BA%A6%E7%9A%84Geohash%E7%AE%97%E6%B3%95%E4%B8%8E%E4%B8%A4%E7%82%B9%E8%B7%9D%E7%A6%BB%E7%AE%97%E6%B3%95/)
    3. [geoTree](https://arxiv.org/pdf/2008.02167.pdf)
-
+2. [轨迹聚类](https://zhuanlan.zhihu.com/p/644217934)
 
 ## 关键词
 1. 无桩式共享单车
@@ -23,6 +23,10 @@ https://data.sh.gov.cn/view/data-resource/index.html?type=道路交通
 [8]刘冰,王舸洋,朱俊宇,等.基于共享单车大数据的骑行生活圈识别及其活动网络模式分析[J].城市规划学刊,2023(04):32-40.DOI:10.16361/j.upf.202304005.
 [9]王俊,于爱荣.基于ConvLSTM的南京地区共享单车需求预测研究[J].软件工程,2024,27(02):55-59.DOI:10.19644/j.cnki.issn2096-1472.2024.002.011.
 [10]谢国微. 天气及建成环境对共享单车出行需求的影响研究[D].南京林业大学,2024.DOI:10.27242/d.cnki.gnjlu.2022.000493.
+[11]洪文兴,陈明韬,刘伊灵,等.基于GeoHash和HDBSCAN的共享单车停车拥挤区域识别[J].厦门大学学报(自然科学版),2022,61(06):1030-1037.
+[12]王小霞,欧阳露,郑诗琪,等.GeoHash与KNN在共享单车停靠点优化选择中的应用[J].广东工业大学学报,2022,39(03):1-7.
+[13]张海亮,张征.基于GeoHash索引的A~*算法优化[J].火力与指挥控制,2021,46(06):78-83.
+[14]陈刚,王国新,明振军,等.基于DBSCAN聚类和LSTM网络的装甲车辆集群轨迹预测方法[J/OL].兵工学报:1-16[2024-04-17].http://kns.cnki.net/kcms/detail/11.2176.tj.20240201.1104.002.html.
 
 ## 参考文献链接
 1. [基于摩拜骑行数据的上海市共享单车减排效益时空分析](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=wcPNn8Zia7NNnM-YGQFY7OR0Yl83BKx9EFlh2sdl5giU7icp05a8kf6t0xd3GfTZ3PSgqRqWIi0qbf8hp_wlVQMQaJD45fvBgd3vh3y8B4WGvAanVVI2S5Sc_malTmUDqREAIlsSmVbPtaOTCyzktw==&uniplatform=NZKPT&language=CHS)
@@ -35,3 +39,7 @@ https://data.sh.gov.cn/view/data-resource/index.html?type=道路交通
 8. [基于共享单车大数据的骑行生活圈识别及其活动网络模式分析](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=wcPNn8Zia7MYvY6iMopn_YMvPbyF4NICs-UidzcjMZKRAVtyVMifLpVmpccBXep9NR_tQwWiguij0H3K3JP5n-wtBu4fduoxtNg_pR0dLJEpBrur7eybZIndQgcXCeZq&uniplatform=NZKPT&language=gb)
 9. [基于ConvLSTM的南京地区共享单车需求预测研究](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=wcPNn8Zia7MkNxt7j_d_9JPlCh0YUlcMfNuXhrJq8MKy4WLOpDljV2ScK2ouMsd0-7rJUn0VyMJIJZmX_9NzfG6Q7qANHukzeDMQwgjsI0BPYQJoWVC1fKlwFDGD0Yaq&uniplatform=NZKPT&language=gb)
 10. [天气及建成环境对共享单车出行需求的影响研究](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=wcPNn8Zia7Nl7v75OAN5S1L0ooZVB3zr5O-exXem7iYVK43mVNzhxIjgFyi77honMlkMnNDTAWTYyyxKu5URwcR_GitNwm7BR5G0zFtYjJkDnlcn8qA4s5Xq_57PPFjpEsOaI25w8gwmpzkt_zrZqA==&uniplatform=NZKPT&language=CHS)
+11. [基于GeoHash和HDBSCAN的共享单车停车拥挤区域识别](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qu0R9T2MZidT__6Rt24c8X4D9foMZS_pzcQzuVcGVzX0IE-OjTOG-t2LTCcHl1eKQT6YGrO2QZtqx3XAqMgOq3EK5c-4rX3Am6oCHzvqQBylejH1kpZTLgpoj4jWQtnYGtA9uKzb8grQ==&uniplatform=NZKPT&language=CHS)
+12. [GeoHash与KNN在共享单车停靠点优化选择中的应用](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9ogrb2hNXgm1-MENxnggnCX_--5mEMR9zSH-EqEqF79wFrNKjsOL3uVptNcDsSGosuCrj46wnIIfzYACxeaXLHRHgBQw_COWRk0jCsCr9CaIjVQKCSO_KU9zeIZt5Hrz66RnDNGPv-f0g==&uniplatform=NZKPT&language=CHS)
+13. [基于GeoHash索引的A~*算法优化](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qzdSQZLR_7MqrBP-Ru1lUKVJXVGtvotdssr8q8bZI8YFVZThmmKotEqVSH_sJxvoD11tF1eKfulzt7rXbzLzR0eQEx9ZjGH4ov57V0KD5Ia4IoSV4hO_lCBxW5YvG-ksmefmKL1EdqgA==&uniplatform=NZKPT&language=CHS)
+14. [基于DBSCAN聚类和LSTM网络的装甲车辆集群轨迹预测方法](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qWE5Iy3HPsgrFFCONuM-N6Vr3XKA7xBygqSPrf8y4k9wCD3xJTzBg8F7YnoiOzlQFxzIBlVwwbQRRLzaDnX8_4aorslJD2hUXex5bTSKr7ksOZhwF-tt3_VRSguL-sHAs=&uniplatform=NZKPT&language=CHS)

@@ -1,3 +1,11 @@
 .DS_Store
 references/*.pdf
 .venv/
+/data/road.osm
+data/road.cpg
+data/road.dbf
+data/road.prj
+data/road.qmd
+data/road.shp
+data/road.shx
+supermap/
