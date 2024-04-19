@@ -1,4 +1,4 @@
-from distance import manhattan,haversine,encode,decode,geohash_approximate_distance
+from distance import manhattan,encode,decode
 
 # 生成轨迹点
 trajectory_points = [
@@ -43,7 +43,6 @@ trajectory_points = [
     [121.433,31.360],
     [121.433,31.361]
 ]
-
 
 start_point =  [121.413,31.358]
 end_point = [121.432,31.356]
