@@ -5,7 +5,6 @@ const map = window.map;
 let icon = BLDraw.innerIcon(1);
 // let icon = BLDraw.innerIcon(0);
 
-
 let se = [
     [121.413,31.358],
     [121.432,31.356]
