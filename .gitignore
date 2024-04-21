@@ -9,3 +9,4 @@ data/road.qmd
 data/road.shp
 data/road.shx
 supermap/
+__pycache__/
