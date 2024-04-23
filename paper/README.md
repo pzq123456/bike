@@ -2,7 +2,7 @@
 全文预计 (4K /1.6 W) 字
 
 ## 目录
-- [第一章 绪论](./chapters/c1.md) (2.5K / 3K)
+- [第一章 绪论](./chapters/c1.md) (2.2K / 3K)
 - [第二章 理论基础与相关技术](./chapters/c2.md) (0 / 3K)
 - [第三章 研究数据与方法](./chapters//c3.md) (2K /4K)
 - [第四章 结果与讨论](./chapters/c4.md) (0 / 4K)
