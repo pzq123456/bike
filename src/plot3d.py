@@ -2,6 +2,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.collections import PolyCollection
+# 3D axes
+from mpl_toolkits.mplot3d import Axes3D
 
 
 # 读取数据
@@ -26,7 +28,7 @@ hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 frequency = [] # 7 * 24
 
 # 首先读取数据
-data = pd.read_csv('src/simple/cdf20.csv')
+data = pd.read_csv('src/simple/cdf16.csv')
 
 
 data['ST'] = pd.to_datetime(data['ST'])
@@ -45,8 +47,12 @@ for i in range(7):
 for index, row in grouped.iterrows():
     frequency[row['weekday']][row['hour']] = row['count']
 
+# 使用 numpy 对数据进行归一化
+frequency = np.array(frequency)
+# 计算每一个小时 占当天总数的比例
+frequency = frequency / frequency.sum(axis=1)[:, None]
 
-ax = plt.figure().add_subplot(projection='3d')
+# 生成每一个面的顶点
 
 def polygon_under_graph(x, y):
     """
@@ -55,54 +61,53 @@ def polygon_under_graph(x, y):
     """
     return [(x[0], 0.), *zip(x, y), (x[-1], 0.)]
 
-
 ax = plt.figure().add_subplot(projection='3d')
-
-# x = np.linspace(0., 10., 31)
-# lambdas = range(1, 9)
-
-# # verts[i] is a list of (x, y) pairs defining polygon i.
-# gamma = np.vectorize(math.gamma)
-# verts = [polygon_under_graph(x, l**x * np.exp(-l) / gamma(x + 1))
-#          for l in lambdas]
-# facecolors = plt.colormaps['viridis_r'](np.linspace(0, 1, len(verts)))
-
-# poly = PolyCollection(verts, facecolors=facecolors, alpha=.7)
-# ax.add_collection3d(poly, zs=lambdas, zdir='y')
-
-# ax.set(xlim=(0, 10), ylim=(1, 9), zlim=(0, 0.35),
-#        xlabel='x', ylabel=r'$\lambda$', zlabel='probability')
-
-# plt.show()
 
 verts = []
 for i in range(7):
     verts.append(polygon_under_graph(hours, frequency[i]))
 
 # 每一个面的颜色 weekday 为一个颜色
-facecolors = plt.cm.viridis(np.linspace(0, 1, 7))
+# facecolors = plt.cm.viridis(np.linspace(0, 1, 7))
+# 颜色倒序
+facecolors = plt.cm.viridis(np.linspace(1, 0, 7))
 
 poly = PolyCollection(verts, facecolors=facecolors, alpha=.7)
 ax.add_collection3d(poly, zs=range(7), zdir='y')
+# 加入 描边
+poly.set_edgecolor('k')
+# 绘制 数据点
+for i in range(7):
+    ax.scatter(hours, [i] * 24, frequency[i], c='k', s=3)
+
 
 ax.set(xlim=(0, 23),
        ylim=(0, 7), 
-       zlim=(0, 500),
+       zlim=(0, 0.2),
          xlabel='hour', ylabel='weekday', zlabel='frequency')
 
-# 减少 x 轴的标签并旋转
-ax.set_xticks(hours[::2])
-ax.set_xticklabels(hourName[::2], rotation=45)
-# 调整 xlabel 的位置
-ax.xaxis.set_label_coords(0.5, -0.1)
+# X 轴更长
+ax.get_proj = lambda: np.dot(Axes3D.get_proj(ax), np.diag([1.5, 1.5, 1, 1.5]))
 
+# 减少 x 轴的标签并旋转
+ax.set_xticks(hours[::4])
+ax.set_xticklabels(hourName[::4], rotation=45)
+# 调整 xlabel 旋转
+ax.xaxis.label.set_rotation(45)
 # add weekday names
 ax.set_yticks(range(7))
 ax.set_yticklabels(weekDayName)
 
 # 图例
-plt.colorbar(poly, ax=ax, orientation='vertical')
-plt.title('3D plot of frequency')
+# legend 每一个颜色对应一个 weekday
+legend = []
+for i in range(7):
+    legend.append(plt.Line2D([0], [0], linestyle='none', c=facecolors[i], marker='o'))
+
+ax.legend(legend, weekDayName, loc='upper right')
+
+# add title
+plt.title('2016 frequency distribution by hour and weekday')
 
 plt.show()
 
