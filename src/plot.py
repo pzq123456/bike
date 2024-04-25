@@ -3,8 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from statis import compute_cdf,compute_pdf
 
-
-
 # 封装为函数
 def cdf(path):
     '''
@@ -86,9 +84,15 @@ if __name__ == '__main__':
     cdfs = []
     names = ['2016', '2020']
     styles = ['-', '--']
-    cdfs.append(cdf('src\simple\cdf16.csv'))
-    cdfs.append(cdf('src\simple\cdf20.csv'))
+    cdfs.append(cdf('src/simple/cdf16.csv'))
+    cdfs.append(cdf('src/simple/cdf20.csv'))
     # 保存 cdfs 文件为 npy 文件
-    np.save('cdfs.npy', cdfs)
+    np.save('cdfs16.npy', cdfs[0])
+    np.save('cdfs20.npy', cdfs[1])
 
     plot_cdf(cdfs, names, styles)
+
+    # # 加载 cdfs.npy 文件
+    # # cdfs = np.load('src/simple/cdfs.npy', allow_pickle=True)
+    # # 只绘制 2016 年的 CDF 图
+    # plot_cdf([cdfs[0]], [names[0]], [styles[0]]) 

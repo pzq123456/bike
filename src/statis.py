@@ -1,6 +1,8 @@
 import numpy as np
 
 def compute_cdf(data):
+    # 忽略 NaN 值
+    data = data.dropna()
     # 将数据排序
     sorted_data = np.sort(data)
     n = len(sorted_data)
@@ -9,6 +11,8 @@ def compute_cdf(data):
     return sorted_data, cdf
 
 def compute_pdf(data):
+    data = data.dropna()
+
     # 将数据排序
     sorted_data = np.sort(data)
     n = len(sorted_data)
