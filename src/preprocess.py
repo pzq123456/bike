@@ -74,3 +74,27 @@ trajectory = [decode(t) for t in trajectory]
 # 将 元组 转换为 列表
 trajectory = [list(t) for t in trajectory]
 print(trajectory)
+
+# 封装
+def generate_trajectory_points(start_point,end_point,trajectory_points):
+    trajectory_points = set([encode(t[1],t[0]) for t in trajectory_points])
+    trajectory = []
+    trajectory.append(encode(start_point[1],start_point[0]))
+
+    while len(trajectory_points) > 0:
+        distance = float('inf')
+        nearest_point = None
+        for point in trajectory_points:
+            if manhattan(decode(trajectory[-1]),decode(point)) < distance:
+                distance = manhattan(decode(trajectory[-1]),decode(point))
+                nearest_point = point
+        trajectory.append(nearest_point)
+        trajectory_points.remove(nearest_point)
+        if nearest_point == encode(end_point[1],end_point[0]):
+            print('找到终点')
+            break
+
+    trajectory = [decode(t) for t in trajectory]
+    # 将 元组 转换为 列表
+    trajectory = [list(t) for t in trajectory]
+    return trajectory
