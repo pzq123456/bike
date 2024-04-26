@@ -37,6 +37,9 @@ data['weekday'] = data['ST'].dt.weekday
 # 添加小时
 data['hour'] = data['ST'].dt.hour
 
+# 测试 weekday 的顺序是否正确
+print(data['weekday'].unique())
+
 # 首先按照 weekday 分组，对于每一个 weekday 再按照 hour 分组统计数量
 grouped = data.groupby(['weekday', 'hour']).size().reset_index(name='count')
 
@@ -47,10 +50,10 @@ for i in range(7):
 for index, row in grouped.iterrows():
     frequency[row['weekday']][row['hour']] = row['count']
 
-# 使用 numpy 对数据进行归一化
-frequency = np.array(frequency)
-# 计算每一个小时 占当天总数的比例
-frequency = frequency / frequency.sum(axis=1)[:, None]
+# # 使用 numpy 对数据进行归一化
+# frequency = np.array(frequency)
+# # 计算每一个小时 占当天总数的比例
+# frequency = frequency / frequency.sum(axis=1)[:, None]
 
 # 生成每一个面的顶点
 
@@ -83,7 +86,7 @@ for i in range(7):
 
 ax.set(xlim=(0, 23),
        ylim=(0, 7), 
-       zlim=(0, 0.2),
+       zlim=(0, 2000),
          xlabel='hour', ylabel='weekday', zlabel='frequency')
 
 # X 轴更长
