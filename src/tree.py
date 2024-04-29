@@ -1,121 +1,103 @@
-import numpy as np
-from distance import haversine
-import pickle
+from distance import geohash_approximate_distance
 import tqdm
+class GeoHashTreeNode:
+    def __init__(self):
+        self.children = {}
 
+class GeoHashTree:
+    def __init__(self):
+        self.root = GeoHashTreeNode()
 
-class Node:
-    def __init__(self, data, dimension=None, parent=None):
-        self.data = data
-        self.dimension = dimension
-        self.left = None
-        self.right = None
-        self.parent = parent
+    def insert(self, geohash):
+        current_node = self.root
+        for char in geohash:
+            if char not in current_node.children:
+                current_node.children[char] = GeoHashTreeNode()
+            current_node = current_node.children[char]
 
-    def __str__(self):
-        return str(self.data)
+    def query(self, geohash_prefix):
+        current_node = self.root
+        for char in geohash_prefix:
+            if char not in current_node.children:
+                return set()  # No matches found
+            current_node = current_node.children[char]
+        
+        # Collect all geohashes under the prefix
+        results = set()
+        self.collect_geohashes(current_node, geohash_prefix, results)
+        return results
 
-
-def distance(a, b):
-    # haversine(a,b)
-    return haversine(a,b)
-    # This function calculates the Euclidean distance between two points.
-    # You can replace this function with your custom distance metric.
-    # dis = 0
-    # for i in range(len(a)):
-    #     dis += (a[i] - b[i]) ** 2
-    # return np.sqrt(dis)
-
-
-def construct(data, node, dimension=0):
-    if len(data) == 0:
-        return None
-
-    if len(data) == 1:
-        node.data = data[0]
-        node.dimension = dimension
-        return node
-
-    # Select the median value of the current dimension as the pivot
-    median_index = np.median(data, axis=0)[dimension]
-
-    # Partition the data into two subsets based on the pivot
-    left_data = [point for point in data if point[dimension] <= median_index]
-    right_data = [point for point in data if point[dimension] > median_index]
-
-    # Construct the left and right subtrees
-    node.left = construct(left_data, node=Node(None, dimension=(dimension + 1) % len(data[0])), dimension=(dimension + 1) % len(data[0]))
-    node.right = construct(right_data, node=Node(None, dimension=(dimension + 1) % len(data[0])), dimension=(dimension + 1) % len(data[0]))
-
-    # Set the node's data and dimension
-    node.data = data[np.argmax(data, axis=0)[dimension]]
-    node.dimension = dimension
-
-    return node
-
-
-def nearest_neighbors(root, query_point, k=1, distance=distance):
-    # Initialize the nearest neighbors
-    nearest_neighbors = []
-
-    # Define a function to recursively search for the nearest neighbors
-    def search(node):
-        if node is None:
+    def collect_geohashes(self, node, prefix, results):
+        if not node.children:
+            results.add(prefix)
             return
+        for char, child in node.children.items():
+            self.collect_geohashes(child, prefix + char, results)
 
-        # Calculate the distance between the query point and the current node
-        d = distance(query_point, node.data)
+def greedy_search(geohash, tree):
+    current_geohash = geohash
+    while current_geohash:
+        results = tree.query(current_geohash)
+        if results:
+            return results
+        current_geohash = current_geohash[:-1]  # Reduce geohash length by 1
+    return set()  # No matches found for any geohash length
 
-        # If the current node is closer to the query point than the farthest nearest neighbor,
-        # update the nearest neighbors
-        if len(nearest_neighbors) < k:
-            nearest_neighbors.append((node, d))
-            nearest_neighbors.sort(key=lambda x: x[1], reverse=True)
-        elif d < nearest_neighbors[0][1]:
-            nearest_neighbors[0] = (node, d)
-            nearest_neighbors.sort(key=lambda x: x[1], reverse=True)
+# 遍历所有的geohash，找到最近的geohash
+def find_nearest_geohash(geohash, geohashes):
+    min_distance = float('inf')
+    nearest_geohash = None
+    for gh in geohashes:
+        distance = geohash_approximate_distance(geohash, gh)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_geohash = gh
+    return nearest_geohash
 
-        # Choose the next branch to visit
-        next_branch = None
-        opposite_branch = None
-        if query_point[node.dimension] < node.data[node.dimension]:
-            next_branch = node.left
-            opposite_branch = node.right
-        else:
-            next_branch = node.right
-            opposite_branch = node.left
+def create_geohash_tree(geohashes):
+    geohash_tree = GeoHashTree()
+    print("Inserting geohashes into the tree...")
+    for geohash in tqdm.tqdm(geohashes):
+        geohash_tree.insert(geohash)
+    return geohash_tree 
 
-        # Recursively search the next branch
-        search(next_branch)
+# # Example usage:
+# # Create a GeoHashTree
+# geohash_tree = GeoHashTree()
 
-        # If the hypersphere crosses the splitting plane, there may be nearest neighbors on the opposite side
-        if len(nearest_neighbors) < k or abs(query_point[node.dimension] - node.data[node.dimension]) < nearest_neighbors[0][1]:
-            search(opposite_branch)
+# # Insert geohashes into the tree
+# geohashes = [
+# 'wtw1m8bb7hyc',
+# 'wtw1m4yxrbd8',
+# 'wtw1kcmjm24u',
+# 'wtw1jyfnhgcs',
+# 'wtw1tkyb1fwc',
+# 'wtw1mm9dtvh0',
+# 'wtw332dqvyep',
+# 'wtw2cycwpbrv',
+# 'wtw1xbg7qyjn',
+# 'wtw23m94mk3x',
+# 'wtw29jqvdzsj',
+# 'wtw2dtxvhjnm',
+# 'wtw2f9vkfcrj',
+# 'wtw1xwfmq12x',
+# 'wtw30fdddwvf',
+# 'wtw0yycg8pjv',
+# 'wtw0xrhd3x38',
+# 'wtw6nf1bj7pw',
+# 'wtw380nmd0cj',
+# ]  # List of geohashes
 
-    # Start the recursive search
-    search(root)
+# for geohash in geohashes:
+#     geohash_tree.insert(geohash)
 
-    # Return the k nearest neighbors
-    nearest_neighbors = [x[0].data for x in nearest_neighbors]
+# # Query nearby geohashes for a given geohash prefix
+# geohash_prefix = "wtw6jkguctxb"
 
-    return nearest_neighbors
+# # 打印最近的geohash
+# results = greedy_search(geohash_prefix, geohash_tree)
+# nearest_geohash = find_nearest_geohash(geohash_prefix, results)
 
-
-if __name__ == "__main__":
-    # Generate some sample data
-    data = [[20, 30], [20, 20], [9, 6], [4, 7], [8, 1], [7, 2], [6, 3]]
-    point = [2, 3]
-
-    # 打印距离
-    for d in data:
-        print("point:",d,"distance:",distance(d,point))
-
-    # Construct the kd-tree
-    root = construct(data, node=Node(None))
-
-    # Query for the nearest neighbors of a point
-    query_point = np.array(point)
-    nearest_neighbors = nearest_neighbors(root, query_point, k=1)
-
-    print("Query Point:", query_point)
-    print("Nearest Neighbors:", nearest_neighbors)
+# # 取 results 中的第一个元素
+# print("Nearby geohashes:", results.pop())
+# print("Nearest geohash:", nearest_geohash)

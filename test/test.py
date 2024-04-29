@@ -9,3 +9,4 @@ print(frequency)
 print(frequency.sum(axis=1))
 print(frequency.sum(axis=1)[:, None])
 print(frequency / frequency.sum(axis=1)[:, None])
+

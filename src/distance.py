@@ -39,5 +39,6 @@ def haversine(latlng1: List[float], latlng2: List[float], R: float = 6378137.0) 
 # print(pgh.decode('wtw66u9x2tkc')) # >>> (‘42.6’, ‘-5.6’)
 
 # print(pgh.geohash_approximate_distance('wtw66u9x2tkc', 'wtw66udprvq3')) # >>> 625441
+# print(geohash_approximate_distance('wtw66u9x2tkc', 'wtw66udprvq3')) # >>> 625441
 # test code
 # print(manhattan([121.412,31.359],[121.413,31.359])) # 0.001
