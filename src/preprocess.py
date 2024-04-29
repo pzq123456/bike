@@ -85,6 +85,42 @@ def load_track(path):
         data = pickle.load(f)
     return data
 
+class_map = {
+    '交通设施服务': 0,
+    '体育休闲服务': 1,
+    '公司企业': 2,
+    '商务住宅': 3,
+    '科教文化服务': 4,
+    '购物服务': 5,
+    '风景名胜': 6,
+    '餐饮服务': 7
+}
+
+# 数据预处理 对 poi 及轨迹分类
+# 首先加载 poi 数据 将字符串类别转换为数字编码 并将经纬度转换为 GeoHash 编码
+def preprocess_poi_data(path,save_path):
+    #     class,lon,lat
+    # 交通设施服务,121.180367,31.161415
+    poi_data = pd.read_csv(path)
+    poi_data['class'] = poi_data['class'].apply(lambda x: class_map[x])
+    poi_data['geohash'] = poi_data.apply(
+        lambda row: encode(row['lat'], row['lon']), axis=1
+    )
+    poi_data.to_csv(save_path, index=False)
+
+# 预处理 轨迹终点数据
+# ID,EX,EY
+# 1,121.525,31.316
+# 2,121.517,31.309
+def preprocess_trajectory_data(path,save_path):
+    # 加载轨迹点数据
+    trajectory_data = pd.read_csv(path)
+    # 对轨迹点数据进行 GeoHash 编码
+    trajectory_data['geohash'] = trajectory_data.apply(
+        lambda row: encode(row['EY'], row['EX']), axis=1
+    )
+    trajectory_data.to_csv(save_path, index=False)
+
 # test
 if __name__ == '__main__':
     path = 'data\\bike16.csv'
