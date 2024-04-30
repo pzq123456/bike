@@ -4,13 +4,12 @@ import pandas as pd
 from scipy import stats
 
 # 加载数据 CSV
-DS = pd.read_csv('src\\simple\\track\\DS20.csv')['DS']
+DS = pd.read_csv('src/simple/track/DS20.csv')['DS']
 
 YEAR = 2020
 
 # 去除异常值 大于 20000
-# DS = DS[DS < 10000]
-
+DS = DS[DS < 6000]
 
 # # 绘制直方图
 # fig, ax1 = plt.subplots()
@@ -32,7 +31,7 @@ mu, sigma = stats.norm.fit(DS)
 
 # 绘制直方图
 fig, ax1 = plt.subplots()
-n, bins, patches = ax1.hist(DS, alpha=0.5, label='Distance', bins=20)
+n, bins, patches = ax1.hist(DS, alpha=0.5, label='Distance', bins=30)
 
 # 设置刻度单位
 ax1.tick_params(bottom=True, top=False, left=True, right=False, labelleft=True, labelright=False)
