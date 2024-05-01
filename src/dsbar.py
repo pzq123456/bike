@@ -1,68 +1,96 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from scipy import stats
+from scipy.stats import norm
+
 
 # 加载数据 CSV
 # DS = pd.read_csv('src/simple/track/DS20.csv')['DS']
 
 # 封装
-def dsbar(DSpath, YEAR, lengend = True):
-    DS = pd.read_csv(DSpath)['DS']
-    DS = DS[DS < 12000]
-    mu, sigma = stats.norm.fit(DS)
-    fig, ax1 = plt.subplots()
-    n, bins, patches = ax1.hist(DS, alpha=0.5, edgecolor='black',label='Distance', bins=30)
-    ax1.tick_params(bottom=True, top=False, left=True, right=False, labelleft=True, labelright=False)
-    ax1.set_xlabel("Distance(m)")
-    ax1.set_ylabel("Frequency(Count)")
-    ax1.set_title("Distance Distribution in {}".format(YEAR))
-    ax1.set_xlim(min(DS), max(DS))
-    ax1.grid(True)
-    ax2 = ax1.twinx()
-    x = np.linspace(min(DS), max(DS), 1000)
-    y = stats.norm.pdf(x, mu, sigma)
-    ax2.plot(x, y, label='Fit: $\mu$ = {:.2f}, $\sigma$ = {:.2f}'.format(mu, sigma))
-    ax2.tick_params(bottom=False, top=True, left=False, right=True, labelleft=False, labelright=True)
-    ax2.set_ylabel("Probability Density")
-    ax2.set_ylim(0, max(y) * 1.1)
-    if lengend:
-        lines1, labels1 = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
+def dsbar(DSpathArr, YEARArr):
+    # colors = ['blue', 'orange']
+    # mayplotlib 默认颜色
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    DS = []
+    for DSpath in DSpathArr:
+        # 只保留小于 7000 m 的数据
+        tmp = pd.read_csv(DSpath)['DS']
+        tmp = tmp[tmp < 7000]
+        DS.append(tmp)
+
+    for i in range(len(DS)):
+        plt.hist(DS[i], bins=100, alpha=0.5, label=YEARArr[i], density=True, edgecolor='black', color=colors[i])
+
+
+        
+    # 拟合分布曲线 使用 scipy.stats.norm.fit() 拟合正态分布
+    for i in range(len(DS)):
+        mu, sigma = norm.fit(DS[i])
+        x = np.linspace(DS[i].min(), DS[i].max(), 1000)
+        y = norm.pdf(x, mu, sigma)
+        plt.plot(x, y, label='N(' + str(round(mu, 2)) + ',' + str(round(sigma, 2)) + ')' + ' ' + YEARArr[i], color=colors[i])
+
+
+
+    # 拟合分布曲线 正态分布
+    # for i in range(len(DS)):
+    #     mu = DS[i].mean()
+    #     sigma = DS[i].std()
+    #     x = np.linspace(DS[i].min(), DS[i].max(), 1000)
+    #     y = 1/(sigma * np.sqrt(2 * np.pi)) * np.exp( - (x - mu)**2 / (2 * sigma**2))
+    #     plt.plot(x, y, label='N(' + str(round(mu, 2)) + ',' + str(round(sigma, 2)) + ')' + ' ' + YEARArr[i], color=colors[i])    
+    # x 轴 刻度增加
+    plt.xticks(np.arange(0, 7000, 200))
+
+    # 添加标题
+    plt.title('Riding Distance Distribution of ' + YEARArr[0] + ' and ' + YEARArr[1])
+    # 添加标签
+    plt.xlabel('Riding Distance (m)')
+    plt.ylabel('Frequency')
+
+    plt.legend()
+    # 显示
     plt.show()
 
+# 封装
+def dubar(DupathArr, YEARArr):
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+
+    DU = []
+    for Dupath in DupathArr:
+        tmp = pd.read_csv(Dupath)['DU']
+        tmp = tmp[tmp < 120] 
+        DU.append(tmp)
+
+    for i in range(len(DU)):
+        plt.hist(DU[i], bins=120, alpha=0.5, label=YEARArr[i], density=True, edgecolor='black', color=colors[i])
 
 
+        
+    # 拟合分布曲线 使用 scipy.stats.norm.fit() 拟合正态分布
+    for i in range(len(DU)):
+        mu, sigma = norm.fit(DU[i])
+        x = np.linspace(DU[i].min(), DU[i].max(), 1000)
+        y = norm.pdf(x, mu, sigma)
+        plt.plot(x, y, label='N(' + str(round(mu, 2)) + ',' + str(round(sigma, 2)) + ')' + ' ' + YEARArr[i], color=colors[i])
 
+    plt.xticks(np.arange(0, 120, 5))
 
+    # 添加标题
+    plt.title('Riding Duration Distribution of ' + YEARArr[0] + ' and ' + YEARArr[1])
+    # 添加标签
+    plt.xlabel('Riding Duration (min)')
+    plt.ylabel('Frequency')
 
-# 骑行时间分布
-def dubar(DSpath, YEAR, lengend = True):
-    DU = pd.read_csv(DSpath)['DU']
-    DU = DU[DU < 200]
-    mu, sigma = stats.norm.fit(DU)
-    fig, ax1 = plt.subplots()
-    n, bins, patches = ax1.hist(DU, alpha=0.5, edgecolor='black',label='Duration', bins=30)
-    ax1.tick_params(bottom=True, top=False, left=True, right=False, labelleft=True, labelright=False)
-    ax1.set_xlabel("Duration(min)")
-    ax1.set_ylabel("Frequency(Count)")
-    ax1.set_title("Duration Distribution in {}".format(YEAR))
-    ax1.set_xlim(min(DU), max(DU))
-    ax1.grid(True)
-    ax2 = ax1.twinx()
-    x = np.linspace(min(DU), max(DU), 1000)
-    y = stats.norm.pdf(x, mu, sigma)
-    ax2.plot(x, y, label='Fit: $\mu$ = {:.2f}, $\sigma$ = {:.2f}'.format(mu, sigma))
-    ax2.tick_params(bottom=False, top=True, left=False, right=True, labelleft=False, labelright=True)
-    ax2.set_ylabel("Probability Density")
-    ax2.set_ylim(0, max(y) * 1.1)
-    if lengend:
-        lines1, labels1 = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
+    plt.legend()
+    # 显示
     plt.show()
 
-# src/simple/DU/DU16.csv
-dubar('src/simple/DU/DU20.csv', '2020')
-# dsbar('src/simple/track/DS20.csv', '2020')
+# dsPaths = ['src/simple/track/DS16.csv','src/simple/track/DS20.csv']
+# years = ['2016','2020']
+# dsbar(dsPaths, years) 
+
+duPaths = ['src/simple/DU/DU16.csv','src/simple/DU/DU20.csv']
+years = ['2016','2020']
+dubar(duPaths, years)
