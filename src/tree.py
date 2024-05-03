@@ -33,6 +33,9 @@ class GeoHashTree:
             return
         for char, child in node.children.items():
             self.collect_geohashes(child, prefix + char, results)
+    
+
+        
 
 def greedy_search(geohash, tree):
     current_geohash = geohash
@@ -61,35 +64,37 @@ def create_geohash_tree(geohashes):
         geohash_tree.insert(geohash)
     return geohash_tree 
 
-# # Example usage:
-# # Create a GeoHashTree
-# geohash_tree = GeoHashTree()
+# Example usage:
+# Create a GeoHashTree
+geohash_tree = GeoHashTree()
 
-# # Insert geohashes into the tree
-# geohashes = [
-# 'wtw1m8bb7hyc',
-# 'wtw1m4yxrbd8',
-# 'wtw1kcmjm24u',
-# 'wtw1jyfnhgcs',
-# 'wtw1tkyb1fwc',
-# 'wtw1mm9dtvh0',
-# 'wtw332dqvyep',
-# 'wtw2cycwpbrv',
-# 'wtw1xbg7qyjn',
-# 'wtw23m94mk3x',
-# 'wtw29jqvdzsj',
-# 'wtw2dtxvhjnm',
-# 'wtw2f9vkfcrj',
-# 'wtw1xwfmq12x',
-# 'wtw30fdddwvf',
-# 'wtw0yycg8pjv',
-# 'wtw0xrhd3x38',
-# 'wtw6nf1bj7pw',
-# 'wtw380nmd0cj',
-# ]  # List of geohashes
+# Insert geohashes into the tree
+geohashes = [
+'wtw1m8bb7hyc',
+'wtw1m4yxrbd8',
+'wtw1kcmjm24u',
+'wtw1jyfnhgcs',
+'wtw1tkyb1fwc',
+'wtw1mm9dtvh0',
+'wtw332dqvyep',
+'wtw2cycwpbrv',
+'wtw1xbg7qyjn',
+'wtw23m94mk3x',
+'wtw29jqvdzsj',
+'wtw2dtxvhjnm',
+'wtw2f9vkfcrj',
+'wtw1xwfmq12x',
+'wtw30fdddwvf',
+'wtw0yycg8pjv',
+'wtw0xrhd3x38',
+'wtw6nf1bj7pw',
+'wtw380nmd0cj',
+]  # List of geohashes
 
-# for geohash in geohashes:
-#     geohash_tree.insert(geohash)
+for geohash in geohashes:
+    geohash_tree.insert(geohash)
+
+
 
 # # Query nearby geohashes for a given geohash prefix
 # geohash_prefix = "wtw6jkguctxb"
