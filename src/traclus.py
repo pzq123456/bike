@@ -447,7 +447,15 @@ def get_representative_trajectory(lines, min_lines=3):
     return representative_points
 
 
-def traclus(trajectories, max_eps=None, min_samples=10, directional=True, use_segments=True, clustering_algorithm=OPTICS, mdl_weights=[1,1,1], d_weights=[1,1,1], progress_bar=False):
+def traclus(trajectories, 
+            max_eps=None, 
+            min_samples=10, 
+            directional=True, 
+            use_segments=True, 
+            clustering_algorithm=OPTICS, 
+            mdl_weights=[1,1,1], 
+            d_weights=[1,1,1], 
+            progress_bar=False):
     """
         Trajectory Clustering Algorithm
     """
