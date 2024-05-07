@@ -34,9 +34,10 @@
 
 [12]塔娜,柴彦威.行为地理学的学科定位与前沿方向[J].地理科学进展,2022,41(01):1-15.
 [13]杨超,汪超.城市过剩通勤与职住平衡模型[J].同济大学学报(自然科学版),2013,41(11):1712-1716.
-
 [14]夏琼燕,罗冠,张翔,等.OpenStreetMap志愿者贡献与留存分析[J].测绘与空间地理信息,2021,44(02):90-93+97.
-[15]于耀. 基于巢式选择模型的网约车用户出行行为分析[D].大连交通大学,2023.DOI:10.26990/d.cnki.gsltc.2023.000101.
+[15]郭雨,陈金勇,张新宇,等.OPTICS与离线批处理在轨迹聚类中的应用[J].计算机工程,2020,46(7):72-77,83.
+
+~~[15]于耀. 基于巢式选择模型的网约车用户出行行为分析[D].大连交通大学,2023.DOI:10.26990/d.cnki.gsltc.2023.000101.~~
 
 [16]洪文兴,陈明韬,刘伊灵,等.基于GeoHash和HDBSCAN的共享单车停车拥挤区域识别[J].厦门大学学报(自然科学版),2022,61(06):1030-1037.
 [17]王小霞,欧阳露,郑诗琪,等.GeoHash与KNN在共享单车停靠点优化选择中的应用[J].广东工业大学学报,2022,39(03):1-7.
@@ -61,9 +62,10 @@
 12. [行为地理学的学科定位与前沿方向](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNE9S0X2z5sHmRujPp4XMitCz19JaddeVsJaRvcQsNGPRlw7Z7wLIXhW1vUv-J9_ttojduRk6oYiyia23hxwzvzfVuyxzufh3phPiAuo7RTwbr3GSaelsUWznyiZz-mb2oyBEMy6qdBLIg==&uniplatform=NZKPT&language=CHS)
 13. [城市过剩通勤与职住平衡模型](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNEN6N26tg-lZH02ThpceJf-nDyCtCYyosYjLlfEA3J8WNcETqlE-_tPb01AVBoJG8al-vUGf5-IDcJekMA7tH7oMuLpY60d3SKeNPLaJMhcbGkLt0Q2-_-8ZrIKIp57koE=&uniplatform=NZKPT&language=CHS)
 14. [OpenStreetMap志愿者贡献与留存分析](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNG0Ha25YR8dfeeoRagc-q7pNfB75DxNb-RzM97RuWlOmJGRqalbdfgxgHqyQGj0LrGb2n-6a0KOi_pDEj-Tvp6qaismrTKjOb9GA74B2tvDy4RWbsqT1ZjkeHZbVfkMS2xDfvKabhaVsQ==&uniplatform=NZKPT&language=CHS)
-15. [基于巢式选择模型的网约车用户出行行为分析](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNFpjJCko12GBaNgGkIx72HX-dzw6BwemZTiCCXNnDzaHB3-FsIcA9AEX7nRM1G1RTlFNUngogo6lUwvMVTHhriwb2dbvLIIw3af5frVJqRv7aPo9z621m53c7c8wsKWyxHvWyu5BfsNRg==&uniplatform=NZKPT&language=CHS)
-16. [基于GeoHash和HDBSCAN的共享单车停车拥挤区域识别](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qu0R9T2MZidT__6Rt24c8X4D9foMZS_pzcQzuVcGVzX0IE-OjTOG-t2LTCcHl1eKQT6YGrO2QZtqx3XAqMgOq3EK5c-4rX3Am6oCHzvqQBylejH1kpZTLgpoj4jWQtnYGtA9uKzb8grQ==&uniplatform=NZKPT&language=CHS)
-17. [GeoHash与KNN在共享单车停靠点优化选择中的应用](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9ogrb2hNXgm1-MENxnggnCX_--5mEMR9zSH-EqEqF79wFrNKjsOL3uVptNcDsSGosuCrj46wnIIfzYACxeaXLHRHgBQw_COWRk0jCsCr9CaIjVQKCSO_KU9zeIZt5Hrz66RnDNGPv-f0g==&uniplatform=NZKPT&language=CHS)
-18. [基于GeoHash索引的A~*算法优化](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qzdSQZLR_7MqrBP-Ru1lUKVJXVGtvotdssr8q8bZI8YFVZThmmKotEqVSH_sJxvoD11tF1eKfulzt7rXbzLzR0eQEx9ZjGH4ov57V0KD5Ia4IoSV4hO_lCBxW5YvG-ksmefmKL1EdqgA==&uniplatform=NZKPT&language=CHS)
-19. [基于DBSCAN聚类和LSTM网络的装甲车辆集群轨迹预测方法](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qWE5Iy3HPsgrFFCONuM-N6Vr3XKA7xBygqSPrf8y4k9wCD3xJTzBg8F7YnoiOzlQFxzIBlVwwbQRRLzaDnX8_4aorslJD2hUXex5bTSKr7ksOZhwF-tt3_VRSguL-sHAs=&uniplatform=NZKPT&language=CHS)
-20. [基于GeoHash算法的周边查询应用研究](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNGsJ1X5ZHaPnFsqg9Y93k-nXn1dPQLVfUAueITAxETT0ll2T4yjT-MG_hK24ZxgY994ILrgua_1ocuRfJU8DFa9T4igQ6CATVOK6x1_VEH5sxrt4fSZripvXf4cjJB9S4uO3ABiQOJ__A==&uniplatform=NZKPT&language=CHS)
+15. [OPTICS与离线批处理在轨迹聚类中的应用](http://www.ecice06.com/CN/10.19678/j.issn.1000-3428.0054309)
+16. [基于巢式选择模型的网约车用户出行行为分析](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNFpjJCko12GBaNgGkIx72HX-dzw6BwemZTiCCXNnDzaHB3-FsIcA9AEX7nRM1G1RTlFNUngogo6lUwvMVTHhriwb2dbvLIIw3af5frVJqRv7aPo9z621m53c7c8wsKWyxHvWyu5BfsNRg==&uniplatform=NZKPT&language=CHS)
+17. [基于GeoHash和HDBSCAN的共享单车停车拥挤区域识别](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qu0R9T2MZidT__6Rt24c8X4D9foMZS_pzcQzuVcGVzX0IE-OjTOG-t2LTCcHl1eKQT6YGrO2QZtqx3XAqMgOq3EK5c-4rX3Am6oCHzvqQBylejH1kpZTLgpoj4jWQtnYGtA9uKzb8grQ==&uniplatform=NZKPT&language=CHS)
+18. [GeoHash与KNN在共享单车停靠点优化选择中的应用](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9ogrb2hNXgm1-MENxnggnCX_--5mEMR9zSH-EqEqF79wFrNKjsOL3uVptNcDsSGosuCrj46wnIIfzYACxeaXLHRHgBQw_COWRk0jCsCr9CaIjVQKCSO_KU9zeIZt5Hrz66RnDNGPv-f0g==&uniplatform=NZKPT&language=CHS)
+19. [基于GeoHash索引的A~*算法优化](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qzdSQZLR_7MqrBP-Ru1lUKVJXVGtvotdssr8q8bZI8YFVZThmmKotEqVSH_sJxvoD11tF1eKfulzt7rXbzLzR0eQEx9ZjGH4ov57V0KD5Ia4IoSV4hO_lCBxW5YvG-ksmefmKL1EdqgA==&uniplatform=NZKPT&language=CHS)
+20. [基于DBSCAN聚类和LSTM网络的装甲车辆集群轨迹预测方法](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=v5HVlYuqh9qWE5Iy3HPsgrFFCONuM-N6Vr3XKA7xBygqSPrf8y4k9wCD3xJTzBg8F7YnoiOzlQFxzIBlVwwbQRRLzaDnX8_4aorslJD2hUXex5bTSKr7ksOZhwF-tt3_VRSguL-sHAs=&uniplatform=NZKPT&language=CHS)
+21. [基于GeoHash算法的周边查询应用研究](https://webvpn.sdust.edu.cn/https/77726476706e69737468656265737421fbf952d2243e635930068cb8/kcms2/article/abstract?v=8WLnD7pOpNGsJ1X5ZHaPnFsqg9Y93k-nXn1dPQLVfUAueITAxETT0ll2T4yjT-MG_hK24ZxgY994ILrgua_1ocuRfJU8DFa9T4igQ6CATVOK6x1_VEH5sxrt4fSZripvXf4cjJB9S4uO3ABiQOJ__A==&uniplatform=NZKPT&language=CHS)
