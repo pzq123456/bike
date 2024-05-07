@@ -2,6 +2,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 from preprocess import load_track
+from traclus import traclus
 
 # utils
 def convert_list_to_linestring(lst):
@@ -15,10 +16,10 @@ def tmp():
 
     # data\track16.pickle data\track16_simplified.pickle
     track = load_track('H:\\bike\\data\\track16_simplified.pickle')
-    # 打印长度
-    # print(len(track))
-    # 提取前十条轨迹
-    # track = track[:1741]
+
+    track = track[:10]
+
+    
 
     # 转化为 GeoDataFrame
     track = convert_list_to_linestring(track)
