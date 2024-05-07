@@ -1,11 +1,7 @@
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
-import numpy as np
 import pickle
-
-
-from traclus import traclus, smooth_trajectory
 
 # utils
 def convert_list_to_linestring(lst):
@@ -28,7 +24,7 @@ def tmp():
     # 打印长度
     # print(len(track))
     # 提取前十条轨迹
-    track = track[:1000]
+    track = track[:1741]
 
     # 转化为 GeoDataFrame
     track = convert_list_to_linestring(track)
@@ -39,51 +35,8 @@ def tmp():
 
     plt.show()
 
-# Your Trajectory Data
-track = load_track('H:\\bike\\data\\track16.pickle')
-
-track = track[:219]
-# 对每一个元素进行转换 numpy.array 
-track = [np.array(i) for i in track]
-
-trajectories = track
-
-# Run the TRACLUS Algorithm
-partitions, segments, dist_matrix, clusters, cluster_assignments, representative_trajectories = \
-traclus(
-    trajectories, 
-    max_eps= 10,
-    min_samples= 10,
-)
-
-# 去掉空的轨迹
-representative_trajectories = [i for i in representative_trajectories if len(i) > 0]
-
-# Smooth the Representative Trajectories
-smoothed_representative_trajectories = [smooth_trajectory(trajectory, window_size=21) for trajectory in representative_trajectories]
-
-# 转化为 GeoDataFrame 
-representative_trajectories = convert_list_to_linestring(representative_trajectories)
-
-# 保存为 pickle 文件
-with open('H:\\bike\\data\\rtras.pickle', 'wb') as f:
-    pickle.dump(representative_trajectories, f)
-
-track = convert_list_to_linestring(track)
-# 以图层的方式 绘制在地图上
-fig, ax = plt.subplots(figsize=(10, 10))
-
-# read and show the data
-shape = gpd.read_file('H:\\bike\\supermap\\boundary\\boundary.shp')
-shape.boundary.plot(ax=ax)
-representative_trajectories.plot(ax=ax, color='red')
-track.plot(ax=ax, color='blue')
-# legend
-plt.legend(['boundary','representative_trajectories','track'])
-plt.show()
-
-# pip --proxy 127.0.0.1:7890 install --upgrade scikit-learn
-
+if __name__ == '__main__':
+    tmp()
 
 
 

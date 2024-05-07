@@ -1,5 +1,5 @@
-from tree import create_geohash_tree, greedy_search
-from distance import geohash_approximate_distance
+# from tree import create_geohash_tree, greedy_search
+# from distance import geohash_approximate_distance
 import pandas as pd
 import tqdm
 import pickle
@@ -25,6 +25,10 @@ def classify_geohash(poipath, tracpath, respath):
         tf.loc[i, 'class'] = df[df['geohash'] == geohash]['class'].values[0]
     # 保存结果
     tf.to_csv(respath, index=False)
+
+
+
+
 
 # if __name__ == '__main__':
 
@@ -60,6 +64,7 @@ def classify_geohash(poipath, tracpath, respath):
     # tracpath = 'src\simple\class\\tmp\\res20.csv'
     # respath = 'src\simple\class\\tmp\\class20.csv'
     # classify_geohash(poipath, tracpath, respath)
+
 
 
 
