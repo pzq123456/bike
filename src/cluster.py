@@ -21,7 +21,6 @@ def tmp():
     track = track[:50]
     track = [np.array(i) for i in track]
     partitions, segments, dist_matrix, clusters, cluster_assignments, representative_trajectories = traclus(track)
-    print(clusters)
 
     # 去空
     representative_trajectories = [i for i in representative_trajectories if i is not None]
