@@ -11,3 +11,7 @@ data/road.shx
 supermap/
 __pycache__/
 drawio/地图.drawio
+dist_matrix.npy
+representative_trajectories.npy
+res.pickle
+track.geojson
