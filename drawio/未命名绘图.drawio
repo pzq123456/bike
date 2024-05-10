@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-05-08T12:32:40.202Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="hlP9Zk1p-vx7oDxyanmW" version="24.2.5" type="device">
+<mxfile host="Electron" modified="2024-05-10T08:05:26.788Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="N5pZcrV6SVfvMa3CVi7-" version="24.2.5" type="device">
   <diagram name="第 1 页" id="ftXndGDlVitekL8Z7LTs">
-    <mxGraphModel dx="4274" dy="1045" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3470" dy="577" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -113,10 +113,10 @@
           <mxGeometry x="-1645" y="1510" width="447.95" height="450" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
-          <mxGeometry x="-1040" y="1830" width="360" height="320" as="geometry" />
+          <mxGeometry x="-1040" y="1830" width="360" height="250" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
-          <mxGeometry x="-1040" y="2160" width="760" height="320" as="geometry" />
+          <mxGeometry x="-1040" y="2090" width="760" height="390" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-5" value="&lt;b&gt;数据采集&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=宋体;fontSize=14;" parent="1" vertex="1">
           <mxGeometry x="-1030" y="1500" width="30" height="280" as="geometry" />
@@ -181,7 +181,7 @@
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-25" value="" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" parent="1" vertex="1">
           <mxGeometry x="-730" y="1520" width="190" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="MWz9sg6eUdSB7ksFbTbA-26" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;重排序、长度计算&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="MWz9sg6eUdSB7ksFbTbA-26" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;重排序、长度计算、线抽稀&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-725" y="1560" width="180" height="40" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-27" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;轨迹据预处理&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -209,10 +209,10 @@
           <mxGeometry x="-480" y="1595" width="160" height="100" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-33" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
-          <mxGeometry x="-670" y="1830" width="390" height="320" as="geometry" />
+          <mxGeometry x="-670" y="1830" width="390" height="250" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-35" value="&lt;b&gt;时间通勤特征&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=宋体;fontSize=14;" parent="1" vertex="1">
-          <mxGeometry x="-1040" y="1830" width="30" height="320" as="geometry" />
+          <mxGeometry x="-1040" y="1830" width="30" height="250" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-36" value="&lt;b&gt;空间通勤特征&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=宋体;fontSize=14;" parent="1" vertex="1">
           <mxGeometry x="-670" y="1830" width="30" height="320" as="geometry" />
@@ -235,10 +235,10 @@
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MWz9sg6eUdSB7ksFbTbA-43" target="MWz9sg6eUdSB7ksFbTbA-46" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MWz9sg6eUdSB7ksFbTbA-43" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;通勤间隔分析&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="MWz9sg6eUdSB7ksFbTbA-43" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;用户行为分析&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-1010" y="1960" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="MWz9sg6eUdSB7ksFbTbA-44" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;通勤时距分布特征&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="MWz9sg6eUdSB7ksFbTbA-44" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;通勤时距分布模式&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-840" y="1920" width="130" height="30" as="geometry" />
         </mxCell>
         <mxCell id="MWz9sg6eUdSB7ksFbTbA-46" value="&lt;span style=&quot;font-family: 宋体; font-size: 14px;&quot;&gt;通勤&lt;/span&gt;&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;习惯特征&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -621,6 +621,42 @@
         </mxCell>
         <mxCell id="4yiYW0BZT7zjpS31J3LP-66" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;否&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="4yiYW0BZT7zjpS31J3LP-68" vertex="1">
           <mxGeometry x="260" y="500" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cg5XMjzyI9S1HbrZjZsH-1" target="cg5XMjzyI9S1HbrZjZsH-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-1" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;线密度计算&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="1920" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-3" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;轨迹栅格、路网栅格&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="1920" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cg5XMjzyI9S1HbrZjZsH-6" target="cg5XMjzyI9S1HbrZjZsH-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-6" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;数学形态学操作&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="1960" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-7" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;二值骨架栅格（轨迹、路网）&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="1960" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cg5XMjzyI9S1HbrZjZsH-9" target="cg5XMjzyI9S1HbrZjZsH-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-9" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;栅格分析&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="2000" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-10" value="相关性度量" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="2000" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cg5XMjzyI9S1HbrZjZsH-12" target="cg5XMjzyI9S1HbrZjZsH-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-12" value="&lt;font face=&quot;宋体&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;过剩通勤计算&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="2040" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cg5XMjzyI9S1HbrZjZsH-13" value="基于线密度栅格的过剩通勤率" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="2040" width="170" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

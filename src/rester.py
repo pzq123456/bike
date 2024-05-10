@@ -66,6 +66,20 @@ def intersection(raster1, raster2):
     intersection = np.logical_and(data1, data2)
     return intersection
 
+# 计算道路对通勤轨迹的覆盖率
+def coverage(raster1, raster2):
+    '''
+    raster1: 通勤轨迹栅格数据
+    raster2: 道路栅格数据
+    '''
+    data1, geotransform, projection = read_single_band_image(raster1)
+    data2, geotransform, projection = read_single_band_image(raster2)
+    # 计算两个栅格数据的交集
+    intersection = np.logical_and(data1, data2)
+    # 计算道路对通勤轨迹的覆盖率
+    coverage = np.sum(intersection) / np.sum(data1)
+    return coverage
+
 # IoU 计算
 def iou(raster1, raster2):
     data1, geotransform, projection = read_single_band_image(raster1)
@@ -87,12 +101,13 @@ def binaryzation(raster):
 if __name__ == '__main__':
     image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
     names = ['track ∩ primary_road', 'track ∩ secondary_road', 'track ∩ tertiary_road']
-    # 计算轨迹与主路、次主路、支路的 IoU
-    IoU = []
+    # 计算轨迹与主路、次主路、支路的覆盖率
+    coverages = [coverage(image_paths[0], image_paths[i + 1]) for i in range(3)]
+
+    #向 name 中添加覆盖率
     for i in range(3):
-        iou_value = iou(image_paths[0], image_paths[i + 1])
-        IoU.append(iou_value)
-    # 计算轨迹与主路、次主路、支路的差异 子图显示 标注 IoU
+        names[i] += ' ' + "{:.2%}".format(coverages[i]) + " coverage"
+
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))
     for i in range(3):
         diff_data = intersection(image_paths[0], image_paths[i + 1])
@@ -100,8 +115,12 @@ if __name__ == '__main__':
         ax.imshow(diff_data, cmap='hot')
         ax.set_title(names[i])
         ax.axis('off')
-        # legend show IoU
-        ax.text(0, 0, 'IoU: %.2f' % IoU[i], color='white', fontsize=10)
+
+    # print coverages
+    for i in range(3):
+        print(coverages[i])
+
+
 
     # add bar of the color
     plt.show()
