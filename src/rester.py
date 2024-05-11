@@ -1,6 +1,7 @@
 from osgeo import gdal
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 
 # 读取单波段影像
 def read_single_band_image(image_path):
@@ -56,6 +57,11 @@ def diff(raster1, raster2):
     # 返回包含了差异的栅格数据
     return diff
 
+def boolean2int(data):
+    data = data.astype(np.uint8)
+    return data
+
+
 def intersection(raster1, raster2):
     data1, geotransform, projection = read_single_band_image(raster1)
     data2, geotransform, projection = read_single_band_image(raster2)
@@ -64,6 +70,8 @@ def intersection(raster1, raster2):
     data2[data2 != 0] = 1
     # 计算两个栅格数据的交集
     intersection = np.logical_and(data1, data2)
+    # 返回包含了交集的栅格数据
+    intersection = boolean2int(intersection)
     return intersection
 
 # 计算道路对通勤轨迹的覆盖率
@@ -74,6 +82,9 @@ def coverage(raster1, raster2):
     '''
     data1, geotransform, projection = read_single_band_image(raster1)
     data2, geotransform, projection = read_single_band_image(raster2)
+    # 二值化
+    data1[data1 != 0] = 1
+    data2[data2 != 0] = 1
     # 计算两个栅格数据的交集
     intersection = np.logical_and(data1, data2)
     # 计算道路对通勤轨迹的覆盖率
@@ -93,38 +104,90 @@ def iou(raster1, raster2):
     return iou
 
 # 二值化 默认将所有非零值设置为 1
-def binaryzation(raster):
-    data, geotransform, projection = read_single_band_image(raster)
+def binaryzation(data):
     data[data != 0] = 1
     return data
+
+custom_kernel = np.array([
+    [0, 1, 0], 
+    [1, 1, 1],
+    [0, 1, 0]], np.uint8)
+
+# 腐蚀操作
+def erode(data, kernel=custom_kernel):
+    data = cv2.erode(data, kernel, iterations=1)
+    return data
+# 膨胀操作
+def dilate(data, kernel=custom_kernel):
+    data = cv2.dilate(data, kernel, iterations=1)
+    return data
+
+# 开运算
+def open(data, kernel=custom_kernel):
+    data = cv2.morphologyEx(data, cv2.MORPH_OPEN, kernel)
+    return data
+
+# 闭运算
+def close(data, kernel=custom_kernel):
+    data = cv2.morphologyEx(data, cv2.MORPH_CLOSE, kernel)
+    return data
+
+# 顶帽运算
+def tophat(data, kernel=custom_kernel):
+    data = cv2.morphologyEx(data, cv2.MORPH_TOPHAT, kernel)
+    return data
+
+# 黑帽运算
+def blackhat(data, kernel=custom_kernel):
+    data = cv2.morphologyEx(data, cv2.MORPH_BLACKHAT, kernel)
+    return data
+
+# 梯度运算
+def gradient(data):
+    kernel = np.ones((3, 3), np.uint8)
+    data = cv2.morphologyEx(data, cv2.MORPH_GRADIENT, kernel)
+    return data
+
+
+
+
+
+
 
 if __name__ == '__main__':
     image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
     names = ['track ∩ primary_road', 'track ∩ secondary_road', 'track ∩ tertiary_road']
     # 计算轨迹与主路、次主路、支路的覆盖率
-    coverages = [coverage(image_paths[0], image_paths[i + 1]) for i in range(3)]
+    # coverages = [coverage(image_paths[0], image_paths[i + 1]) for i in range(3)]
 
     #向 name 中添加覆盖率
-    for i in range(3):
-        names[i] += ' ' + "{:.2%}".format(coverages[i]) + " coverage"
+    # for i in range(3):
+    #     names[i] += ' ' + "{:.2%}".format(coverages[i]) + " coverage"
+    mykernel = np.array([
+        [0,1],
+        [0,1]
+    ], np.uint8)
 
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))
     for i in range(3):
         diff_data = intersection(image_paths[0], image_paths[i + 1])
+
+        # 闭运算
+        diff_data = close(diff_data)
+        diff_data = erode(diff_data, mykernel)
+
+     
+
         ax = axs[i]
         ax.imshow(diff_data, cmap='hot')
         ax.set_title(names[i])
         ax.axis('off')
 
     # print coverages
-    for i in range(3):
-        print(coverages[i])
-
-
+    # for i in range(3):
+    #     print(coverages[i])
 
     # add bar of the color
     plt.show()
 
-
-    
-        
+# pip --proxy 127.0.0.1:7890 install --upgrade opencv-python
