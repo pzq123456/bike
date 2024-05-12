@@ -169,6 +169,20 @@ def helper(data, mykernel):
     data = erode(data, mykernel)
     return data
 
+def save_single_band_image(image_path, data, geotransform, projection):
+    # 创建一个 driver
+    driver = gdal.GetDriverByName('GTiff')
+    # 创建一个输出影像
+    dataset = driver.Create(image_path, data.shape[1], data.shape[0], 1, gdal.GDT_Float32)
+    # 设置仿射变换参数
+    dataset.SetGeoTransform(geotransform)
+    # 设置投影信息
+    dataset.SetProjection(projection)
+    # 写入数据
+    dataset.GetRasterBand(1).WriteArray(data)
+    # 释放资源
+    dataset = None
+
 # 绘制轨迹数据 需要绘制颜色条带 并对数据作夸张处理
 def draw_track():
     data, geotransform, projection = read_single_band_image('H:\\bike\qgis\轨迹.tif')
@@ -184,6 +198,7 @@ def draw_track():
     data1 = np.where(data < (max_value - min_value) / 3, data, 0)
     data2 = np.where(np.logical_and(data >= (max_value - min_value) / 3, data < 2 * (max_value - min_value) / 3), data, 0)
     data3 = np.where(data >= 2 * (max_value - min_value) / 3, data, 0)
+
     # 绘制轨迹数据
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))
     # 绘制第一个层级的数据
@@ -207,7 +222,10 @@ def draw_track():
     data3 = open(data3)
     # 对data3 做闭运算
     data3 = close(data3)
-
+    # 保存三个层级的数据为 tif 文件 同样的投影和仿射变换参数
+    save_single_band_image('H:\\bike\qgis\轨迹1.tif', data1, geotransform, projection)
+    save_single_band_image('H:\\bike\qgis\轨迹2.tif', data2, geotransform, projection)
+    save_single_band_image('H:\\bike\qgis\轨迹3.tif', data3, geotransform, projection)
     im = ax.imshow(data3, cmap='hot', vmin=vmin, vmax=vmax)
     ax.set_title('{:.2f} < desity < {:.2f}'.format(2 * (max_value - min_value) / 3, max_value))
     ax.axis('off')
@@ -215,9 +233,8 @@ def draw_track():
     fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.6)
     plt.show()
 
-
-if __name__ == '__main__':
-    # draw_track()
+def coverage():
+ # draw_track()
     image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
     names = ['track ∩ primary_road', 'track ∩ secondary_road', 'track ∩ tertiary_road']
 
@@ -260,5 +277,70 @@ if __name__ == '__main__':
         ax.axis('off')
 
     plt.show()
+
+
+def jaccard(data1,data2):
+    # read data
+    data1, geotransform, projection = read_single_band_image(data1)
+    data2, geotransform, projection = read_single_band_image(data2)
+    data1 = binaryzation(data1)
+    data2 = binaryzation(data2)
+    intersection = np.logical_and(data1, data2)
+    union = np.logical_or(data1, data2)
+    jaccard = np.sum(intersection) / np.sum(union)
+    return jaccard
+
+def jaccard_(data1, data2):
+    data1 = binaryzation(data1)
+    data2 = binaryzation(data2)
+    intersection = np.logical_and(data1, data2)
+    union = np.logical_or(data1, data2)
+    jaccard = np.sum(intersection) / np.sum(union)
+    return jaccard
+
+def jaccard_main():
+    image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
+    jaccards = []
+    for i in range(3):
+        jaccard_ = jaccard(image_paths[0], image_paths[i + 1])
+        jaccards.append(jaccard_)
+    print(jaccards)
+
+def length(data):
+    # 读取数据
+    data, geotransform, projection = read_single_band_image(data)
+    # 二值化
+    data = binaryzation(data)
+    # 计算长度
+    length = np.sum(data)
+    return length
+
+def length_(data):
+    # 二值化
+    data = binaryzation(data)
+    # 计算长度
+    length = np.sum(data)
+    return length
+
+
+
+
+if __name__ == '__main__':
+    # 计算轨迹与各级别道路的length
+    image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
+    lengths = []
+    # 首先腐各级别道路数据
+    mykernel = np.array([
+        [0,1],
+        [0,1]
+    ], np.uint8)
+    for i in range(3):
+        mylength= length_(helper(binaryzation(read_single_band_image(image_paths[i + 1])[0]), mykernel))
+        lengths.append(mylength)
+    print(lengths)
+
+
+
+   
 
 # pip --proxy 127.0.0.1:7890 install --upgrade opencv-python
