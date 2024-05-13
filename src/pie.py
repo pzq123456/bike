@@ -42,11 +42,57 @@ def draw_pie(data,title):
     
     plt.show()
 
-if __name__ == '__main__':
+def draw_pie_DS(data,title):
+    colors = ['#FF6347', '#FFA07A', '#FFD700', '#ADFF2F', '#00FF7F', '#00FFFF', '#1E90FF', '#9370DB']
+    # 累计每种类别的 距离 DS 
+    # 累加距离 再除以总的距离
+    class_DS = {}
+    for i in range(8):
+        class_DS[i] = 0
+    for item in data:
+        class_DS[item[0]] += item[1]
+    total_DS = sum([item[1] for item in data])
+    for i in range(8):
+        class_DS[i] /= total_DS
 
-    YEAR = '2020'
+    # 绘制圆环图
+    plt.figure(figsize=(8, 8))
+
+    # 找到最大值的索引
+    max_index = max(class_DS, key=class_DS.get)
+
+    # 突出显示最大值
+    explode = [0] * 8
+    explode[max_index] = 0.1
+
+    # plt.pie(class_DS.values(), labels=class_DS.keys(), colors=colors, autopct='%1.1f%%', startangle=140, wedgeprops=dict(width=0.3, edgecolor='w'), explode=explode)
+    # 图中标注出百分比及总的距离 距离/1000 单位 km
+    plt.pie(class_DS.values(), labels=[class_map[i] + '\n' + str(round(class_DS[i] * total_DS / 1000, 2)) + ' km' for i in class_DS.keys()],
+            colors=colors, autopct='%1.1f%%', startangle=140, wedgeprops=dict(width=0.3, edgecolor='w'), explode=explode)
+
+    plt.axis('equal')  # 使饼图保持圆形
+    plt.title(title, fontsize=16, fontweight='bold')    
+    # plt.legend(class_DS.keys(), loc='upper right', fontsize=12, title='Class', title_fontsize='14')
+
+    plt.show()
+   
+
+if __name__ == '__main__':
+    # draw pie2
+    # 读取每种类别的 DS 和 DU
+    YEAR = '2016'
     # src\simple\class\tmp\class16.csv
     # 读取数据
-    data = pd.read_csv('src\simple\class\\tmp\class20.csv')
-    data = data['class'].values.tolist()
-    draw_pie(data, YEAR + ' Destination Distribution')
+    data = pd.read_csv('src\simple\class\\tmp\class16.csv')
+    data = data[['class', 'DS']].values.tolist()
+    draw_pie_DS(data, YEAR + ' Distance Distribution')
+
+
+
+    # YEAR = '2020'
+    # # src\simple\class\tmp\class16.csv
+    # # 读取数据
+    # data = pd.read_csv('src\simple\class\\tmp\class20.csv')
+    # data = data['class'].values.tolist()
+    # draw_pie(data, YEAR + ' Destination Distribution')
+
