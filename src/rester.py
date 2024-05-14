@@ -2,6 +2,7 @@ from osgeo import gdal
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+from matplotlib_scalebar.scalebar import ScaleBar
 
 # 读取单波段影像
 def read_single_band_image(image_path):
@@ -37,17 +38,35 @@ def draw():
 
     # 多子图显示 根据 path 的数量 分两行显示 紧凑显示
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+
     # 为每个子图设置标题
     for i in range(len(datas)):
         ax = axs[int(i / 2), i % 2]
-        ax.imshow(datas[i], cmap='hot')
+        im = ax.imshow(datas[i], cmap='hot')
         ax.set_title(names[i])
         ax.axis('off')
+        # km 为单位
+        scalebar = ScaleBar(0.1, "km")
+        ax.add_artist(scalebar)
+        # 添加颜色条带
+        # fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.6)
+        # 颜色条带大小适配子图
+        fig.colorbar(im, ax=ax, shrink=0.6)
     plt.show()
 
 def diff(raster1, raster2):
     data1, geotransform, projection = read_single_band_image(raster1)
     data2, geotransform, projection = read_single_band_image(raster2)
+    # 默认进行二值化处理
+    data1[data1 != 0] = 1
+    data2[data2 != 0] = 1
+    # 计算两个栅格数据的差异
+    diff = data1 - data2
+    diff[diff != 0] = 1
+    # 返回包含了差异的栅格数据
+    return diff
+
+def diff_(data1, data2):
     # 默认进行二值化处理
     data1[data1 != 0] = 1
     data2[data2 != 0] = 1
@@ -65,6 +84,16 @@ def boolean2int(data):
 def intersection(raster1, raster2):
     data1, geotransform, projection = read_single_band_image(raster1)
     data2, geotransform, projection = read_single_band_image(raster2)
+    # 默认进行二值化处理
+    data1[data1 != 0] = 1
+    data2[data2 != 0] = 1
+    # 计算两个栅格数据的交集
+    intersection = np.logical_and(data1, data2)
+    # 返回包含了交集的栅格数据
+    intersection = boolean2int(intersection)
+    return intersection
+
+def intersection_(data1, data2):
     # 默认进行二值化处理
     data1[data1 != 0] = 1
     data2[data2 != 0] = 1
@@ -207,11 +236,15 @@ def draw_track():
     data1 = close(data1)
     im = ax.imshow(data1, cmap='hot', vmin=vmin, vmax=vmax)
     ax.set_title('{:.2f} < desity < {:.2f}'.format(min_value, (max_value - min_value) / 3))
+    scalebar = ScaleBar(0.1, "km")
+    ax.add_artist(scalebar)
     ax.axis('off')
     # 绘制第二个层级的数据
     ax = axs[1]
     im = ax.imshow(data2, cmap='hot', vmin=vmin, vmax=vmax)
     ax.set_title('{:.2f} < desity < {:.2f}'.format((max_value - min_value) / 3, 2 * (max_value - min_value) / 3))
+    scalebar = ScaleBar(0.1, "km")
+    ax.add_artist(scalebar)    
     ax.axis('off')
     # 绘制第三个层级的数据
     ax = axs[2]
@@ -223,61 +256,18 @@ def draw_track():
     # 对data3 做闭运算
     data3 = close(data3)
     # 保存三个层级的数据为 tif 文件 同样的投影和仿射变换参数
-    save_single_band_image('H:\\bike\qgis\轨迹1.tif', data1, geotransform, projection)
-    save_single_band_image('H:\\bike\qgis\轨迹2.tif', data2, geotransform, projection)
-    save_single_band_image('H:\\bike\qgis\轨迹3.tif', data3, geotransform, projection)
+    # save_single_band_image('H:\\bike\qgis\轨迹1.tif', data1, geotransform, projection)
+    # save_single_band_image('H:\\bike\qgis\轨迹2.tif', data2, geotransform, projection)
+    # save_single_band_image('H:\\bike\qgis\轨迹3.tif', data3, geotransform, projection)
     im = ax.imshow(data3, cmap='hot', vmin=vmin, vmax=vmax)
     ax.set_title('{:.2f} < desity < {:.2f}'.format(2 * (max_value - min_value) / 3, max_value))
     ax.axis('off')
+    # 比例尺
+    scalebar = ScaleBar(0.1, "km")
+    ax.add_artist(scalebar)
     # 添加颜色条带
     fig.colorbar(im, ax=axs.ravel().tolist(), shrink=0.6)
     plt.show()
-
-def coverage():
- # draw_track()
-    image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
-    names = ['track ∩ primary_road', 'track ∩ secondary_road', 'track ∩ tertiary_road']
-
-    mykernel = np.array([
-        [0,1],
-        [0,1]
-    ], np.uint8)
-
-    intersection_data = []
-
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-    for i in range(3):
-        diff_data = intersection(image_paths[0], image_paths[i + 1])
-
-        # 闭运算
-        diff_data = erode(diff_data, mykernel)
-
-        diff_data = dilate(diff_data, mykernel)
-        diff_data = dilate(diff_data, mykernel)
-        diff_data = close(diff_data, mykernel)
-        # 去除噪声
-
-
-        intersection_data.append(diff_data)
-
-    # 计算轨迹与主路、次主路、支路的覆盖率
-    # coverages = [coverage(image_paths[0], image_paths[i + 1]) for i in range(3)]
-    coverages = [coverage_(binaryzation(read_single_band_image(image_paths[0])[0])
-                           , helper(binaryzation(read_single_band_image(image_paths[i + 1])[0]), mykernel)) for i in range(3)]
-
-    # 向 name 中添加覆盖率
-    for i in range(3):
-        names[i] += ' ' + "{:.2%}".format(coverages[i]) + " coverage"
-
-    # 为每个子图设置标题
-    for i in range(3):
-        ax = axs[i]
-        ax.imshow(intersection_data[i], cmap='gray')
-        ax.set_title(names[i])
-        ax.axis('off')
-
-    plt.show()
-
 
 def jaccard(data1,data2):
     # read data
@@ -322,10 +312,7 @@ def length_(data):
     length = np.sum(data)
     return length
 
-
-
-
-if __name__ == '__main__':
+def length():
     # 计算轨迹与各级别道路的length
     image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
     lengths = []
@@ -338,6 +325,109 @@ if __name__ == '__main__':
         mylength= length_(helper(binaryzation(read_single_band_image(image_paths[i + 1])[0]), mykernel))
         lengths.append(mylength)
     print(lengths)
+
+def draw2():
+    image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
+    names = ['track ∩ primary_road', 'track ∩ secondary_road', 'track ∩ tertiary_road']
+
+    # mykernel = np.array([
+    #     [0,1,0],
+    #     [1,1,1],
+    #     [0,1,0]
+    # ], np.uint8)
+
+    # mykernel = np.array([
+    #     [0,1],
+    #     [0,1],
+    # ], np.uint8)
+
+    intersection_data = []
+
+
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+    for i in range(3):
+        diff_data = intersection(image_paths[0], image_paths[i + 1])
+        # 闭运算
+        # diff_data = erode(diff_data, mykernel)
+
+        # diff_data = dilate(diff_data, mykernel)
+        # diff_data = close(diff_data, mykernel)
+        # diff_data = close(diff_data, mykernel2)
+        # diff_data = dilate(diff_data, mykernel)
+        # diff_data = close(diff_data, mykernel2)
+
+        intersection_data.append(diff_data)
+
+    # 计算轨迹与主路、次主路、支路的覆盖率
+    # coverages = [coverage(image_paths[0], image_paths[i + 1]) for i in range(3)]
+    coverages = [coverage_(binaryzation(read_single_band_image(image_paths[0])[0])
+                           , intersection_data[i]
+                           ) for i in range(3)]
+
+    # 向 name 中添加覆盖率
+    for i in range(3):
+        names[i] += ' ' + "{:.2%}".format(coverages[i]) + " coverage"
+
+    # 为每个子图设置标题
+    for i in range(3):
+        ax = axs[i]
+        ax.imshow(intersection_data[i], cmap='gray')
+        ax.set_title(names[i])
+        ax.axis('off')
+        # km 为单位
+        scalebar = ScaleBar(0.1, "km")
+        ax.add_artist(scalebar)
+
+
+    plt.show()
+
+
+if __name__ == '__main__':
+    image_paths = ['H:\\bike\qgis\轨迹.tif', 'H:\\bike\qgis\主路.tif', 'H:\\bike\qgis\次主路.tif', 'H:\\bike\qgis\支路.tif']
+    datas = []
+    for i in range(len(image_paths)):
+        data, geotransform, projection = read_single_band_image(image_paths[i])
+        datas.append(data)
+
+    # 将轨迹数据与各级别道路数据进行交集运算
+    intersection_data = []
+    for i in range(3):
+        diff_data = intersection_(datas[0], datas[i + 1])
+        intersection_data.append(diff_data)
+    
+    # 将所有交集并集到一起
+    intersection_data_all = intersection_data[0]
+    for i in range(1, 3):
+        intersection_data_all = np.logical_or(intersection_data_all, intersection_data[i])
+    
+    # intersection_data_all numpy int8
+    intersection_data_all = boolean2int(intersection_data_all)
+    # 腐蚀操作
+    mykernel = np.array([
+        [0,0.5,0],
+        [0.5,1,0.5],
+        [0,0.5,0]
+    ], np.uint8)
+    intersection_data_all = close(intersection_data_all, mykernel)
+    intersection_data_all = close(intersection_data_all, mykernel)
+
+
+    # 轨迹数据减去所有交集数据
+    track_data = datas[0]
+    track_data = open(track_data, mykernel)
+    track_data = open(track_data, mykernel)
+    track_data = diff_(track_data, intersection_data_all)
+    
+    # show track data
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    ax.imshow(track_data, cmap='gray')
+    ax.axis('off')
+    # km 为单位
+    scalebar = ScaleBar(0.1, "km")
+    ax.add_artist(scalebar)
+    plt.show()
+
+
 
 
 

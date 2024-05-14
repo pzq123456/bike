@@ -18,7 +18,17 @@ def preprocess_poi_data(path,save_path):
     poi_data['class'] = poi_data['class'].apply(lambda x: class_map[x])
     poi_data.to_csv(save_path, index=False)
 
+def weight(list,weight):
+    res = 0
+    for i in range(len(list)):
+        res += list[i]*weight[i]
+    res = res/sum(weight)
+    return res
+
 if __name__ == '__main__':
-    path = 'H:\\bike\data\poi18.csv'
-    save_path = 'poi18_code.csv'
-    preprocess_poi_data(path,save_path)
+    # path = 'H:\\bike\data\poi18.csv'
+    # save_path = 'poi18_code.csv'
+    # preprocess_poi_data(path,save_path)
+    lists = [0.1871,0.2032,0.2989]
+    weights = [11640, 12790, 22293]
+    print(weight(lists,weights))
