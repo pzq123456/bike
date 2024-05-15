@@ -1,86 +1,151 @@
 import numpy as np
 from osgeo import gdal, osr
-import datetime
+import matplotlib.pyplot as plt
+import pandas as pd
+import tqdm
+from shapely import geometry
+# kmeans
+from sklearn.cluster import KMeans
+import geopandas as gpd
 
-# 定义空间范围和格网大小
-min_lon, max_lon = 116.0, 117.0
-min_lat, max_lat = 39.0, 40.0
-grid_size = 0.001
+EXTENT = [121.297, 121.629, 31.077, 31.416]
+# 121.2969999999999970,31.0770000000000017
+# 121.6290000000000049,31.4160000000000004
 
-# 计算格网行列数
-lat_grid_count = int((max_lat - min_lat) / grid_size)
-lon_grid_count = int((max_lon - min_lon) / grid_size)
+# bike16.csv
+# ID,BID,UID,ST,SX,SY,ET,EX,EY,EC,DS,DU
+# 1,79699,759,2016/8/1 0:23,121.52,31.309,2016/8/1 0:32,121.525,31.316,3,867.65,9
+# 2,33279,1440,2016/8/1 0:25,121.505,31.294,2016/8/1 0:40,121.517,31.309,6,2967.41,15
+def read_data(filename):
+    df = pd.read_csv(filename)
+    # only keep the columns we need: SX, SY, EX, EY, ST, ET
+    df = df[['SX', 'SY', 'EX', 'EY', 'ST', 'ET']]
+    # convert ST and ET to datetime objects
+    df['ST'] = pd.to_datetime(df['ST'])
+    df['ET'] = pd.to_datetime(df['ET'])
+    return df
 
-# 初始化借车和还车计数栅格
-borrow_grid = np.zeros((lat_grid_count, lon_grid_count, 2), dtype=np.int32)
-return_grid = np.zeros((lat_grid_count, lon_grid_count, 2), dtype=np.int32)
+def init_grid(extent, size, time_windows):
+    # time_windows = [[7, 10], [17, 20]]
+    # make mutiple grids for each time window
+    grid = np.zeros((len(time_windows), int((extent[3] - extent[2]) / size), int((extent[1] - extent[0]) / size), 2), dtype=np.int32)
+    return grid
 
-# 示例数据记录
-data = [
-    {'SX': 116.1, 'SY': 39.1, 'start_time': datetime.datetime(2024, 5, 15, 8, 30),
-     'EX': 116.2, 'EY': 39.2, 'end_time': datetime.datetime(2024, 5, 15, 9, 0)},
-    # 添加更多数据
-]
+# test if the grid is initialized correctly
+def test_init_grid():
+    grid = init_grid(EXTENT, 0.001, [[7, 10], [17, 20]])
+    print(grid.shape)
+    print(grid[0].shape)
+    print(grid[0][0].shape)
+    print(grid[0][0][0].shape)
 
-# 计算网格索引函数
-def get_grid_index(lat, lon, min_lat, min_lon, grid_size):
-    lat_index = int((lat - min_lat) / grid_size)
-    lon_index = int((lon - min_lon) / grid_size)
+def get_grid_index(lat, lon, extent, size):
+    lat_index = int((lat - extent[2]) / size)
+    lon_index = int((lon - extent[0]) / size)
     return lat_index, lon_index
 
-# 计算时间索引函数
-def get_time_index(timestamp):
+def get_time_index(timestamp, time_windows):
     hour = timestamp.hour
-    if 7 <= hour < 10:
-        return 0  # 早高峰
-    elif 17 <= hour < 20:
-        return 1  # 晚高峰
-    return None  # 非高峰期
+    for i, window in enumerate(time_windows):
+        if window[0] <= hour < window[1]:
+            return i
+    return None
 
-# 遍历轨迹数据，更新借车和还车计数
-for record in data:
-    borrow_time_index = get_time_index(record['start_time'])
-    return_time_index = get_time_index(record['end_time'])
-    if borrow_time_index is not None:
-        lat_index, lon_index = get_grid_index(record['SY'], record['SX'], min_lat, min_lon, grid_size)
-        borrow_grid[lat_index][lon_index][borrow_time_index] += 1
-    if return_time_index is not None:
-        lat_index, lon_index = get_grid_index(record['EY'], record['EX'], min_lat, min_lon, grid_size)
-        return_grid[lat_index][lon_index][return_time_index] += 1
 
-# 计算潮汐指数栅格
-tidal_index_grid = np.zeros_like(borrow_grid, dtype=np.float32)
+def update_grid(data, grid, extent, size, time_windows):
+    borrow_grid = np.zeros((grid.shape[0], grid.shape[1], grid.shape[2], 2), dtype=np.int32)
+    return_grid = np.zeros((grid.shape[0], grid.shape[1], grid.shape[2], 2), dtype=np.int32)
+    for i in tqdm.tqdm(range(data.shape[0])):
+        borrow_lat, borrow_lon = data.iloc[i]['SY'], data.iloc[i]['SX']
+        return_lat, return_lon = data.iloc[i]['EY'], data.iloc[i]['EX']
+        borrow_time_index = get_time_index(data.iloc[i]['ST'], time_windows)
+        return_time_index = get_time_index(data.iloc[i]['ET'], time_windows)
+        if borrow_time_index is not None:
+            borrow_lat_index, borrow_lon_index = get_grid_index(borrow_lat, borrow_lon, extent, size)
+            borrow_grid[borrow_time_index, borrow_lat_index, borrow_lon_index, 0] += 1
+        if return_time_index is not None:
+            return_lat_index, return_lon_index = get_grid_index(return_lat, return_lon, extent, size)
+            return_grid[return_time_index, return_lat_index, return_lon_index, 1] += 1
+    return borrow_grid, return_grid
+    
 
-for i in range(lat_grid_count):
-    for j in range(lon_grid_count):
-        for k in range(2):  # 0: 早高峰, 1: 晚高峰
-            borrow_count = borrow_grid[i][j][k]
-            return_count = return_grid[i][j][k]
-            if borrow_count + return_count > 0:
-                tidal_index = (borrow_count - return_count) / (borrow_count + return_count)
-                tidal_index_grid[i][j][k] = tidal_index
+def calculate_tidal_index(borrow_grid, return_grid):
+    # 计算方法：借车次数 - 还车次数 / 借车次数 + 还车次数
+    tidal_index = np.zeros((borrow_grid.shape[0], borrow_grid.shape[1], borrow_grid.shape[2]), dtype=np.float32)
+    for i in range(borrow_grid.shape[0]):
+        for j in range(borrow_grid.shape[1]):
+            for k in range(borrow_grid.shape[2]):
+                borrow = borrow_grid[i, j, k, 0]
+                return_ = return_grid[i, j, k, 1]
+                if borrow + return_ == 0:
+                    tidal_index[i, j, k] = 0
+                else:
+                    tidal_index[i, j, k] = (borrow - return_) / (borrow + return_)
+    return tidal_index
 
-# GDAL创建TIFF文件函数
-def save_tiff(data, filename, min_lon, min_lat, grid_size):
+def save_tiff(data, filename, extent, size):
     driver = gdal.GetDriverByName('GTiff')
     rows, cols = data.shape
     dataset = driver.Create(filename, cols, rows, 1, gdal.GDT_Float32)
-    
-    # 设置地理变换参数（左上角坐标和分辨率）
-    geotransform = (min_lon, grid_size, 0, max_lat, 0, -grid_size)
-    dataset.SetGeoTransform(geotransform)
-    
-    # 设置投影信息（WGS84坐标系）
+    dataset.SetGeoTransform((extent[0], size, 0, extent[3], 0, -size))
     srs = osr.SpatialReference()
     srs.ImportFromEPSG(4326)
     dataset.SetProjection(srs.ExportToWkt())
-    
-    # 写入数据
     dataset.GetRasterBand(1).WriteArray(data)
     dataset.FlushCache()
 
-# 保存潮汐指数栅格为TIFF文件
-save_tiff(tidal_index_grid[:, :, 0], 'morning_peak_tidal_index.tiff', min_lon, min_lat, grid_size)
-save_tiff(tidal_index_grid[:, :, 1], 'evening_peak_tidal_index.tiff', min_lon, min_lat, grid_size)
+# 提取结果数据中不为0的数据为点集数据 并保存为shp文件
+def save_shp(data, extent, size,path):
+    # 同时需要保存经纬度信息 和 值信息 选择栅格中点作为经纬度信息
+    # 保存为点集数据
+    rows, cols = data.shape
+    points = []
+    values = []
+    for i in tqdm.tqdm(range(rows)):
+        for j in range(cols):
+            if data[i,j] != 0:
+                lat = extent[2] + i * size
+                lon = extent[0] + j * size
+                points.append([lon, lat])
+                values.append(data[i,j])
+    gdf = gpd.GeoDataFrame(geometry=gpd.points_from_xy([p[0] for p in points], [p[1] for p in points]))
+    # 设置坐标系 
+    gdf.crs = 'EPSG:4326'
+    gdf['value'] = values
+    gdf.to_file(path)
 
-print("TIFF文件已生成")
+# 将边界转化为 shp文件
+
+def save_boundary(extent, path):
+    # 保存为shp文件
+    # 构造边界多边形
+    # 构造为一个矩形
+
+    boundary = geometry.Polygon([[extent[0], extent[2]], [extent[1], extent[2]], [extent[1], extent[3]], [extent[0], extent[3]]])
+    # 转化为geopandas的数据格式
+    boundary = gpd.GeoDataFrame(geometry=[boundary])
+    boundary.crs = 'EPSG:4326'
+    boundary.to_file(path)
+
+
+
+
+if __name__ == "__main__":
+    save_boundary(EXTENT, 'H:\\bike\qgis\\boundary.shp')
+
+    # filename = 'data/bike20.csv'
+    # data = read_data(filename)
+    # # 只取前100条数据
+    # data = data.head(229)
+
+    # grid = init_grid(EXTENT, 0.001, [[7, 10], [17, 20]])
+    # borrow_grid, return_grid = update_grid(data, grid, EXTENT, 0.001, [[7, 10], [17, 20]])
+    # tidal_index = calculate_tidal_index(borrow_grid, return_grid)
+    # # save shp
+    # save_shp(tidal_index[0], EXTENT, 0.001, 'H:\\bike\qgis\潮汐数据\morning20.shp')
+    # save_shp(tidal_index[1], EXTENT, 0.001, 'H:\\bike\qgis\潮汐数据\evening20.shp')
+
+    # # save H:\bike\qgis
+    # save_tiff(tidal_index[0], 'H:\\bike\qgis\morning20.tiff', EXTENT, 0.001)
+    # save_tiff(tidal_index[1], 'H:\\bike\qgis\evening20.tiff', EXTENT, 0.001)
+    # print('done')
