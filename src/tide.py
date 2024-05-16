@@ -51,7 +51,6 @@ def get_time_index(timestamp, time_windows):
             return i
     return None
 
-
 def update_grid(data, grid, extent, size, time_windows):
     borrow_grid = np.zeros((grid.shape[0], grid.shape[1], grid.shape[2], 2), dtype=np.int32)
     return_grid = np.zeros((grid.shape[0], grid.shape[1], grid.shape[2], 2), dtype=np.int32)
@@ -84,6 +83,8 @@ def calculate_tidal_index(borrow_grid, return_grid):
     return tidal_index
 
 def save_tiff(data, filename, extent, size):
+    # debug：首先需要将逆序排列行 GeoTIFF 用的是屏幕坐标系，所以需要将数据逆序排列
+    data = np.flipud(data)
     driver = gdal.GetDriverByName('GTiff')
     rows, cols = data.shape
     dataset = driver.Create(filename, cols, rows, 1, gdal.GDT_Float32)
@@ -127,16 +128,38 @@ def save_boundary(extent, path):
     boundary.crs = 'EPSG:4326'
     boundary.to_file(path)
 
+def test():
+# EXTENT = [121.297, 121.629, 31.077, 31.416] 
+
+    pointLT = [121.296, 31.415]
+    valueLT = 1
+    pointRB = [121.627, 31.077]
+    valueRB = -1
+
+    pointlist = [pointLT, pointRB]
+    valuelist = [valueLT, valueRB]
+
+    # 生成栅格数据
+    grid = init_grid(EXTENT, 0.001, [[7, 10]])
+    # 计算栅格索引 将测试点放入栅格中
+    for i in range(len(pointlist)):
+        lat_index, lon_index = get_grid_index(pointlist[i][1], pointlist[i][0], EXTENT, 0.001)
+        print('lat_index', lat_index)
+        print('lon_index', lon_index)
+        grid[0, lat_index, lon_index, 0] = valuelist[i]
+
+    # 保存为 tiff
+    save_tiff(grid[0,:,:,0], 'H:\\bike\qgis\TEST.tiff', EXTENT, 0.001)
 
 
 
 if __name__ == "__main__":
-    save_boundary(EXTENT, 'H:\\bike\qgis\\boundary.shp')
+    test()
 
-    # filename = 'data/bike20.csv'
+    # filename = 'data/bike16.csv'
     # data = read_data(filename)
     # # 只取前100条数据
-    # data = data.head(229)
+    # data = data.head(1741)
 
     # grid = init_grid(EXTENT, 0.001, [[7, 10], [17, 20]])
     # borrow_grid, return_grid = update_grid(data, grid, EXTENT, 0.001, [[7, 10], [17, 20]])
