@@ -1,7 +1,11 @@
 var image;  // image has been imported as a global variable (one band kernel density image)
 
-var Min = -43789.04174797;
-var Max = 47493.6070857597;
+// m16
+// var Min = -43789.04174797;
+// var Max = 47493.6070857597;
+
+var Min = -41864.609002553465;
+var Max = 41270.14581821809;
 
 Map.addLayer(image, {min: Min, max: Max, palette: ['blue', 'yellow', 'red']}, 'Kernel Density');
 
