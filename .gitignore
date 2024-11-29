@@ -17,3 +17,4 @@ res.pickle
 track.geojson
 qgis/
 drawio/
+!ppt/drawio
